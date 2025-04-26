@@ -29,8 +29,10 @@ export class googleAuthStrategy extends PassportStrategy(Strategy, 'google') {
   ) {
     console.log(profile);
 
-    return profile;
+    const { email } = profile;
     // 이메일 있으면 로그인,
     // 이메일 없으면 회원가입 후 유저 리턴 (with JWT 생성)
+
+    return profile;
   }
 }
