@@ -2,10 +2,16 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginUserDto } from '../user/dto/login-user.dto';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
+  ) {}
 
   async registerUser(createUserDto: CreateUserDto) {
     const newUser = await this.userService.createUser(createUserDto);
@@ -28,8 +34,19 @@ export class AuthService {
 
     // password 를 response에 안보여주기 위해서
     user.password = undefined;
+
     // 3
 
     return user;
+  }
+
+  public generateAccessToken(userId: string) {
+    const payload: any = { userId };
+    const accessToken = this.jwtService.sign(payload, {
+      secret: this.configService.get<string>('ACCESSTOKEN_SECRET'),
+      expiresIn: this.configService.get<string>('ACCESSTOKEN_EXPIRATION_TIME'),
+    });
+
+    return accessToken;
   }
 }

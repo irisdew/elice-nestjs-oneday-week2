@@ -1,10 +1,11 @@
-import { Body, Controller, Post, Req, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { CreateUserDto } from '../user/dto/create-user.dto';
 import { LoginUserDto } from '../user/dto/login-user.dto';
 import { RequestWithUser } from './interfaces/requestWithUser.interface';
 import { ApiBody } from '@nestjs/swagger';
 import { LocalAuthGuard } from './guards/local-auth.guards';
+import { JwtAuthGuards } from './guards/jwt-auth.guards';
 
 @Controller('auth')
 export class AuthController {
@@ -21,13 +22,16 @@ export class AuthController {
   @Post('/login')
   @ApiBody({ type: LoginUserDto })
   async loggedInUser(@Req() req: RequestWithUser) {
-    return req.user;
-    // return await this.authService.loggedInUser(loginUserDto);
-    // 이렇게 하는걸 보안적으로 nestJS에서 권장하지 않음
+    const { user } = req;
+    const accessToken = await this.authService.generateAccessToken(user.id);
+
+    return { user, accessToken };
   }
 
-  // 2. 유저서비스에 등록하는 로직, id/email을 기반으로 유저를 찾는 로직
-  // 3. Auth 리소스를 생성
-  // 4. 유저 모듈에서 유저 서비스를 Export -> Auth 모듈에서 유저 모듈을 import
-  // 5. Auth Controller에 회원가입과 로그인 엔드포인트 만들기
+  // 로그인 후 유저정보 가져오는 API
+  @UseGuards(JwtAuthGuards)
+  @Get()
+  async getUserInfo(@Req() req: RequestWithUser) {
+    return req.user;
+  }
 }
