@@ -4,7 +4,6 @@ import { Strategy } from 'passport-google-oauth2';
 import { ConfigService } from '@nestjs/config';
 import { UserService } from '../../user/user.service';
 import { AuthService } from '../auth.service';
-import { config } from 'rxjs';
 import { VerifiedCallback } from 'passport-jwt';
 
 @Injectable()
