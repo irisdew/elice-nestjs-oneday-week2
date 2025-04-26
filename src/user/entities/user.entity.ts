@@ -13,7 +13,7 @@ export class User extends BaseEntity {
   public email: string;
 
   @Column()
-  @Exclude()
+  // @Exclude() // password 를 response에 안보여주기 위해서
   public password: string;
 
   @Column({ nullable: true })

@@ -77,3 +77,12 @@ $ npm run test:cov
 
 - TeddyKwak - joke79@hanyang.ac.kr
 - 김강호
+
+----
+## Notes
+
+1. 유저 리소스 생성 -> 유저 엔티티 구성 -> 유저 모듈에 유저 엔티티를 등록
+2. 유저서비스에 등록하는 로직, id/ email을 기반으로 유저를 찾는 로직
+3. Auth 리소스를 생성
+4. 유저 모듈에서 유저 서비스를 Export -> Auth 모듈에서 유저 모듈을 import
+5. Auth Controller에 회원가입 / 로그인 Endpoint를 생성

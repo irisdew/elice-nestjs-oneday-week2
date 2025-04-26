@@ -21,10 +21,9 @@ export class AuthController {
   @Post('/login')
   @ApiBody({ type: LoginUserDto })
   async loggedInUser(@Req() req: RequestWithUser) {
-    console.log('passport ver login');
     return req.user;
     // return await this.authService.loggedInUser(loginUserDto);
-    // 이렇게 하는걸 보안적으로 nestJS에서 권장하지 안음
+    // 이렇게 하는걸 보안적으로 nestJS에서 권장하지 않음
   }
 
   // 2. 유저서비스에 등록하는 로직, id/email을 기반으로 유저를 찾는 로직
